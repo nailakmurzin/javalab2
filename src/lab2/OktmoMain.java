@@ -3,6 +3,7 @@ package lab2;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class OktmoMain {
 
@@ -14,17 +15,21 @@ public class OktmoMain {
             String s;
             while ((s = br.readLine()) != null) {
                 lineCount++;
-                System.out.println(lineCount + "\t " + s);
-//                if (lineCount == 20) {
-//                    break; // пока частично
-//                }
+                String[] arr = s.split(";");
+                if(arr.length==0){
+                    System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+                    //break;
+                }
+                System.out.println(lineCount + "\t " + Arrays.toString(arr));
+                
             }
         } catch (IOException ex) {
             System.out.println("Reading error in line " + lineCount);
-            ex.printStackTrace();
         } finally {
             try {
-                br.close();
+                if (br != null) {
+                    br.close();
+                }
             } catch (IOException ex) {
                 System.out.println("Can not close");
             }
