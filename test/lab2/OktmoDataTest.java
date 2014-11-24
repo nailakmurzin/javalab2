@@ -15,17 +15,17 @@ import static org.junit.Assert.*;
  * @author Nail
  */
 public class OktmoDataTest {
-    
+
     public OktmoDataTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @Before
     public void setUp() {
-        
+
     }
 
     /**
@@ -34,8 +34,9 @@ public class OktmoDataTest {
     @Test
     public void testToString() {
         OktmoReader or = new OktmoReader();
-        OktmoData data = or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv");
+        OktmoData data = new OktmoData();
+        String[] readPlaces = or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
         System.out.print(data);
     }
-    
+
 }
