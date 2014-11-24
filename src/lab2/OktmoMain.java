@@ -7,9 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.transformation.SortedList;
 
 public class OktmoMain {
+
+    private static OktmoData read() {
+        OktmoReader or = new OktmoReader();
+        OktmoData data = new OktmoData();
+        or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        return data;
+    }
 
     public static long readPlace() {
         long start;
@@ -114,24 +123,46 @@ public class OktmoMain {
     }
 
     public static void sortPlace() {
-        OktmoReader or = new OktmoReader();
-        OktmoData data = new OktmoData();
-        String[] noSuitable = or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        OktmoData data = read();
+
         System.out.println("2/////////////");
         ArrayList<String> list = new ArrayList<>();
-        for (Place p : data.getPlaces()) {
+        data.getPlaces().stream().forEach((p) -> {
             list.add(p.getName());
-        }
+        });
         Collections.sort(list);
-        for (String s : list) {
+        list.stream().forEach((s) -> {
             System.out.println(s);
-        }
+        });
+        ArrayList<Place> sortedPlaces = new ArrayList<>();
+        sortedPlaces.addAll(data.getPlaces());
+        Collections.sort(sortedPlaces, new Place.SortedByName());
+        sortedPlaces.stream().forEach((p) -> {
+            System.out.println(p);
+        });
+    }
+
+    public static void regexPlace() {
+        ArrayList<String> list = new ArrayList<>();
+        read().getPlaces().forEach((Place s) -> {
+            Pattern p = Pattern.compile("^.{0,3}ово$");
+            Matcher m = p.matcher(s.getName());
+            if (m.matches()) {
+                list.add(s.getName());
+            }
+        });
+
+        list.stream().forEach((s) -> {
+            System.out.println(s);
+        });
+
     }
 
     public static void main(String[] args) {
         //readTest();
         //speedTest();
-        sortPlace();
+        //sortPlace();
+        regexPlace();
 
     }
 

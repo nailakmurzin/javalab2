@@ -1,5 +1,6 @@
 package lab2;
 
+import com.sun.javafx.scene.layout.region.Margins.Converter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 
 public class OktmoReader {
 
@@ -28,6 +30,7 @@ public class OktmoReader {
         };
     }
 
+    ///////////////////////////////////
     public static String[] devidedIntoWords(String _text, String _separator) {
         List<String> s = new ArrayList();
         int oldIndexOf;
@@ -65,11 +68,20 @@ public class OktmoReader {
         return s.toArray(new String[s.size()]);
     }
 
+    public static String[] devidedIntoWords_Regex(String _text, String _separator) {
+        List<String> s = new ArrayList();
+        if(_text.matches("^[А-Я].+")){
+            
+        }
+        return s.toArray(new String[s.size()]);
+    }
+
+    ///////////////////////////////////
     public Place getPlace(String[] arr) {
         if (arr.length > 0) {
             String number = arr[0].replace(" ", "");
             if (number.length() > 0 && arr.length >= 2) {
-                if(arr[2].matches("^[А-Я].+")){
+                if (arr[2].matches("^[А-Я].+")) {
                     return null;
                 }
 //                if (arr[2].startsWith("Населенные")) {                    
@@ -89,8 +101,9 @@ public class OktmoReader {
         return null;
     }
 
+    //////////////////////////////////
     public Place getPlaceFromString(String _text) {
-        return getPlace(this.devidedIntoWords(_text, ";"));
+        return getPlace(OktmoReader.devidedIntoWords(_text, ";"));
     }
 
     public Place getPlaceFromString_Split(String _text) {
@@ -101,65 +114,28 @@ public class OktmoReader {
         return getPlace(devidedIntoWords_StringToken(_text, ";"));
     }
 
-    public String[] readPlaces(String _fileName, OktmoData data) {
-        int lineCount = 0;
-        List<String> noSuitable = new ArrayList();
-        BufferedReader bufer = null;
+    public Place getPlaceFromString_Regex(String _text) {
+        return getPlace(devidedIntoWords_Regex(_text, ";"));
+    }
 
-        try {
-            bufer = new BufferedReader(new FileReader(_fileName));
-            String text;
-            while ((text = bufer.readLine()) != null) {
-                lineCount++;
-                Place place = this.getPlaceFromString(text);
-                if (place != null) {
-                    data.addPlace(place);
-                } else {
-                    noSuitable.add(text);
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("Reading error in line " + lineCount + " " + Arrays.toString(ex.getStackTrace()));
-        } finally {
-            try {
-                bufer.close();
-            } catch (IOException ex) {
-                System.out.println("Can not close! " + ex.getMessage());
-            }
-        }
-        return noSuitable.toArray(new String[noSuitable.size()]);
+    //////////////////////////////////
+    public String[] readPlaces(String _fileName, OktmoData data) {
+        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString);
     }
 
     public String[] readPlaces_Split(String _fileName, OktmoData data) {
-        int lineCount = 0;
-        List<String> noSuitable = new ArrayList();
-        BufferedReader bufer = null;
-
-        try {
-            bufer = new BufferedReader(new FileReader(_fileName));
-            String text;
-            while ((text = bufer.readLine()) != null) {
-                lineCount++;
-                Place place = this.getPlaceFromString_Split(text);
-                if (place != null) {
-                    data.addPlace(place);
-                } else {
-                    noSuitable.add(text);
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("Reading error in line " + lineCount + " " + Arrays.toString(ex.getStackTrace()));
-        } finally {
-            try {
-                bufer.close();
-            } catch (IOException ex) {
-                System.out.println("Can not close! " + ex.getMessage());
-            }
-        }
-        return noSuitable.toArray(new String[noSuitable.size()]);
+        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_Split);
     }
 
     public String[] readPlaces_StringToken(String _fileName, OktmoData data) {
+        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_StringToken);
+    }
+
+    public String[] readPlaces_Regex(String _fileName, OktmoData data) {
+        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_Regex);
+    }
+
+    private String[] readPlacesAllMethods(String _fileName, OktmoData data, Function<String, Place> converter) {
         int lineCount = 0;
         List<String> noSuitable = new ArrayList();
         BufferedReader bufer = null;
@@ -169,7 +145,7 @@ public class OktmoReader {
             String text;
             while ((text = bufer.readLine()) != null) {
                 lineCount++;
-                Place place = this.getPlaceFromString_StringToken(text);
+                Place place = converter.apply(text);
                 if (place != null) {
                     data.addPlace(place);
                 } else {

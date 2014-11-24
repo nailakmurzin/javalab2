@@ -1,5 +1,7 @@
 package lab2;
 
+import java.util.Comparator;
+
 public class Place implements Comparable {
 
     private long code = 0;
@@ -50,6 +52,46 @@ public class Place implements Comparable {
             return result;
         }
         return 0;
+    }
+
+    public static class SortedByName implements Comparator<Place> {
+
+        @Override
+        public int compare(Place o1, Place o2) {
+            if (o1 == null || o2 == null) {
+                throw new NullPointerException();
+            }
+            return o1.getName().compareTo(o2.getName());
+        }
+
+    }
+
+    public static class SortedByCode implements Comparator<Place> {
+
+        @Override
+        public int compare(Place o1, Place o2) {
+            if (o1 == null || o2 == null) {
+                throw new NullPointerException();
+            }
+            if (o1.getCode() > o2.getCode()) {
+                return 1;
+            } else {
+                return o1.getCode() == o2.getCode() ? 0 : -1;
+            }
+        }
+
+    }
+
+    public static class SortedByStatus implements Comparator<Place> {
+
+        @Override
+        public int compare(Place o1, Place o2) {
+            if (o1 == null || o2 == null) {
+                throw new NullPointerException();
+            }
+            return o1.getStatus().compareTo(o2.getStatus());
+        }
+
     }
 
 }
