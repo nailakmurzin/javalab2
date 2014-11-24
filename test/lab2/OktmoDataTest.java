@@ -35,7 +35,7 @@ public class OktmoDataTest {
     public void testToString() {
         OktmoReader or = new OktmoReader();
         OktmoData data = new OktmoData();
-        String[] readPlaces = or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
         System.out.print(data);
     }
 

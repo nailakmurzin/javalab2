@@ -35,7 +35,7 @@ public class OktmoReaderTest {
         PrintWriter console = new PrintWriter(new OutputStreamWriter(System.out, "UTF-8"));
         OktmoReader or = new OktmoReader();
         OktmoData data = new OktmoData();
-        String[] readPlaces = or.readPlaces("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
         System.out.print(data.size());
         Place[] places = data.getPlaces().toArray(new Place[data.size()]);
         if (places.length > 9) {

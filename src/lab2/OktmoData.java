@@ -9,7 +9,7 @@ public class OktmoData {
     private final HashSet<String> allStatuses;
 
     public OktmoData() {
-        this.places = new ArrayList();
+        this.places = new ArrayList<>();
         allStatuses = new HashSet<>();
     }
 

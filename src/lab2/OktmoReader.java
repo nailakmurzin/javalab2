@@ -1,20 +1,18 @@
 package lab2;
 
-import com.sun.javafx.scene.layout.region.Margins.Converter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OktmoReader {
+
+    private static final String regex = "(\\d+[ ]\\d+[ ]\\d+[ ]\\d+);([\\d]+);([А-Яа-я0-9-+?\\/ ]+)";
 
     protected String[] getHeadTail(String _text, String _separator) {
         int indexOf = _text.indexOf(_separator);
@@ -31,7 +29,7 @@ public class OktmoReader {
     }
 
     ///////////////////////////////////
-    public static String[] devidedIntoWords(String _text, String _separator) {
+    public static String[] devidedIntoWords_IndexOf(String _text) {
         List<String> s = new ArrayList();
         int oldIndexOf;
         int indexOf = -1;
@@ -40,102 +38,64 @@ public class OktmoReader {
             indexOf = _text.indexOf(";", oldIndexOf);
             if (indexOf > 0) {
                 s.add(_text.substring(oldIndexOf, indexOf));
-            } else if (oldIndexOf > 0) {
+            } else if (oldIndexOf > 0/*last*/) {
                 s.add(_text.substring(oldIndexOf));
                 break;
             } else {
+                //first
                 break;
             }
         } while (true);
-        if (s.isEmpty()) {
-            s.add(_text);
-        }
         return s.toArray(new String[s.size()]);
     }
 
-    public static String[] devidedIntoWords_StringToken(String _text, String _separator) {
+    public static String[] devidedIntoWords_Split(String _text) {
+        return _text.split(";");
+    }
+
+    public static String[] devidedIntoWords_Regex(String _text) {
         List<String> s = new ArrayList();
-        StringTokenizer st = new StringTokenizer(_text, _separator, true);
-        while (st.hasMoreTokens()) {
-            String value = st.nextToken();
-            if (_separator.equals(value)) {
-                value = null;
-            } else if (st.hasMoreTokens()) {
-                st.nextToken();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher match = pattern.matcher(_text);
+        if (match.matches()) {
+            for (int i = 1; i <= match.groupCount(); i++) {
+                s.add(match.group(i));
             }
-            s.add(value);
-        }
-        return s.toArray(new String[s.size()]);
-    }
-
-    public static String[] devidedIntoWords_Regex(String _text, String _separator) {
-        List<String> s = new ArrayList();
-        if(_text.matches("^[А-Я].+")){
-            
         }
         return s.toArray(new String[s.size()]);
     }
 
     ///////////////////////////////////
     public Place getPlace(String[] arr) {
-        if (arr.length > 0) {
-            String number = arr[0].replace(" ", "");
-            if (number.length() > 0 && arr.length >= 2) {
-                if (arr[2].matches("^[А-Я].+")) {
-                    return null;
-                }
-//                if (arr[2].startsWith("Населенные")) {                    
-//                    return null;
-//                }
-                String[] del = getHeadTail(arr[2], " ");
-                long LongDigit = Long.parseLong(number);
-
-                if (del.length > 1) {
-                    return new Place(LongDigit, del[1], del[0]);
-                } else {
-                    //return new Place(LongDigit, del[0], "");
-                    return null;
-                }
-            }
+        if (arr.length != 3) {
+            return null;
         }
-        return null;
+        String number = arr[0].replace(" ", "");
+
+        if (number.length() == 0 || arr[2].matches("^[А-Я].+")) {
+            return null;
+        }
+        long longDigit = Long.parseLong(number);
+        String[] del = getHeadTail(arr[2], " ");
+
+        return del.length > 1 ? new Place(longDigit, del[1], del[0]) : null;
     }
 
     //////////////////////////////////
-    public Place getPlaceFromString(String _text) {
-        return getPlace(OktmoReader.devidedIntoWords(_text, ";"));
+    public String[] readPlaces_IndexOf(String _fileName, OktmoData _data) {
+        return this.readPlacesAllMethods(_fileName, _data, OktmoReader::devidedIntoWords_IndexOf);
     }
 
-    public Place getPlaceFromString_Split(String _text) {
-        return getPlace(_text.split(";"));
+    public String[] readPlaces_Split(String _fileName, OktmoData _data) {
+        return this.readPlacesAllMethods(_fileName, _data, OktmoReader::devidedIntoWords_Split);
     }
 
-    public Place getPlaceFromString_StringToken(String _text) {
-        return getPlace(devidedIntoWords_StringToken(_text, ";"));
-    }
-
-    public Place getPlaceFromString_Regex(String _text) {
-        return getPlace(devidedIntoWords_Regex(_text, ";"));
+    public String[] readPlaces_Regex(String _fileName, OktmoData _data) {
+        return this.readPlacesAllMethods(_fileName, _data, OktmoReader::devidedIntoWords_Regex);
     }
 
     //////////////////////////////////
-    public String[] readPlaces(String _fileName, OktmoData data) {
-        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString);
-    }
-
-    public String[] readPlaces_Split(String _fileName, OktmoData data) {
-        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_Split);
-    }
-
-    public String[] readPlaces_StringToken(String _fileName, OktmoData data) {
-        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_StringToken);
-    }
-
-    public String[] readPlaces_Regex(String _fileName, OktmoData data) {
-        return this.readPlacesAllMethods(_fileName, data, this::getPlaceFromString_Regex);
-    }
-
-    private String[] readPlacesAllMethods(String _fileName, OktmoData data, Function<String, Place> converter) {
+    private String[] readPlacesAllMethods(String _fileName, OktmoData _data, Function<String, String[]> _switch) {
         int lineCount = 0;
         List<String> noSuitable = new ArrayList();
         BufferedReader bufer = null;
@@ -145,9 +105,9 @@ public class OktmoReader {
             String text;
             while ((text = bufer.readLine()) != null) {
                 lineCount++;
-                Place place = converter.apply(text);
+                Place place = getPlace(_switch.apply(text));
                 if (place != null) {
-                    data.addPlace(place);
+                    _data.addPlace(place);
                 } else {
                     noSuitable.add(text);
                 }

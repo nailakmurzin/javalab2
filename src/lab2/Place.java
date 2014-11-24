@@ -54,13 +54,22 @@ public class Place implements Comparable {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            throw new NullPointerException();
+        }
+        Place entry = (Place) o;
+        if (entry == null) {
+            throw new ClassCastException();
+        }
+        return this == entry || (this.code == entry.getCode() && this.name.equals(entry.getName()) && this.status.equals(entry.getStatus()));
+    }
+
     public static class SortedByName implements Comparator<Place> {
 
         @Override
         public int compare(Place o1, Place o2) {
-            if (o1 == null || o2 == null) {
-                throw new NullPointerException();
-            }
             return o1.getName().compareTo(o2.getName());
         }
 
@@ -70,9 +79,6 @@ public class Place implements Comparable {
 
         @Override
         public int compare(Place o1, Place o2) {
-            if (o1 == null || o2 == null) {
-                throw new NullPointerException();
-            }
             if (o1.getCode() > o2.getCode()) {
                 return 1;
             } else {
