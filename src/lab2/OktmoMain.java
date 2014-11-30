@@ -180,6 +180,22 @@ public class OktmoMain {
         System.out.println();
     }
 
+    public static void readRegionsDistinctsSettlements2() {
+        OktmoReader or = new OktmoReader();
+        OktmoData data = new OktmoData();
+        String[] readRegionsDistinctsSettlements = or.readRegionsDistinctsSettlements("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_1.csv", data);
+        String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+
+        data.associatePlaces();
+
+        System.out.println(data.getSettlements().size());
+        
+        System.out.println();
+        System.out.println(data.getDistricts().size());
+        System.out.println();
+        System.out.println(data.getRegions().size());
+    }
+
     public static void main(String[] args) {
         //readTest();
         //speedTest();
@@ -189,7 +205,8 @@ public class OktmoMain {
         //getPlace_Regex();
         //getPlace_IndexOf();
         //getPlaceFirstChar();
-        readRegionsDistinctsSettlements();
+        //readRegionsDistinctsSettlements();
+        readRegionsDistinctsSettlements2();
 
     }
 

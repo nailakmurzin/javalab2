@@ -77,6 +77,7 @@ public class OktmoData {
     }
 
     public void associatePlaces() {
+        //Settlement
         List<Place> pl = new ArrayList<>();
         pl.addAll(this.places);
         for (Settlement s : this.settlements) {
@@ -84,6 +85,30 @@ public class OktmoData {
             while (i.hasNext()) {
                 Place p = i.next();
                 if (s.add(p)) {
+                    i.remove();
+                }
+            }
+        }
+        //District
+        List<Settlement> sl = new ArrayList<>();
+        sl.addAll(this.settlements);
+        for (District d : this.districts) {
+            Iterator<Settlement> i = sl.iterator();
+            while (i.hasNext()) {
+                Settlement s = i.next();
+                if (d.add(s)) {
+                    i.remove();
+                }
+            }
+        }
+        //Region
+        List<District> dl = new ArrayList<>();
+        dl.addAll(this.districts);
+        for (Region r : this.regions) {
+            Iterator<District> i = dl.iterator();
+            while (i.hasNext()) {
+                District d = i.next();
+                if (r.add(d)) {
                     i.remove();
                 }
             }
