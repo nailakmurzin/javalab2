@@ -1,9 +1,17 @@
 package lab2;
 
+import lab2.Map.Place;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lab2.Map.District;
+import lab2.Map.Region;
+import lab2.Map.Settlement;
 
 public class OktmoMain {
 
@@ -49,7 +57,7 @@ public class OktmoMain {
             //System.out.println(s);
         }
         System.out.println("2/////////////");
-        for (String s : data.getStatues()) {
+        for (String s : data.getPlaceStatues()) {
             System.out.println(s);
         }
     }
@@ -90,11 +98,98 @@ public class OktmoMain {
 
     }
 
+    public static void getPlace_Regex() {
+        long start = System.nanoTime();
+        OktmoReader or = new OktmoReader();
+        OktmoData data = new OktmoData();
+        String[] readPlaces = or.readPlaces_Regex("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        long time = System.nanoTime() - start;
+        System.out.println(time + "//// Regex time = ");
+        System.out.println("Size = " + data.placesSize());
+        for (String s : readPlaces) {
+            if (!s.contains("Населенные пункты") && !s.contains(";;")) {
+                System.out.println(s);
+            }
+        }
+
+    }
+
+    public static void getPlace_IndexOf() {
+        long start = System.nanoTime();
+        OktmoReader or = new OktmoReader();
+        OktmoData data = new OktmoData();
+        String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+        long time = System.nanoTime() - start;
+        System.out.println(time + "//// indexOf time = ");
+        System.out.println("Size = " + data.placesSize());
+        for (String s : readPlaces) {
+            if (!s.contains("Населенные пункты") && !s.contains(";;")) {
+                System.out.println(s);
+            }
+        }
+
+    }
+
+    public static void getPlaceFirstChar() {
+        OktmoData data = read();
+        List<Place> list = OktmoData.getPlacesApplyingForName_Regex("^([а-я]).+\\1$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE, data.getPlaces());
+        for (Place p : list) {
+            System.out.println(p);
+        }
+    }
+
+    public static void readRegionsDistinctsSettlements() {
+        OktmoReader or = new OktmoReader();
+        OktmoData data = new OktmoData();
+        String[] readRegionsDistinctsSettlements = or.readRegionsDistinctsSettlements("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_1.csv", data);
+//        for (String s : readRegionsDistinctsSettlements) {
+//            System.out.println(s);
+//        }
+        /////////////Regions 000 000
+//        System.out.println("//////getRegions().size() " + data.getRegions().size());
+//        for (Region r : data.getRegions()) {
+//            System.out.println(r);
+//        }
+//        /////////////Districts 000
+//        System.out.println("//////Districts().size() " + data.getDistricts().size());
+//        for (District d : data.getDistricts()) {
+//            System.out.println(d);
+//        }
+//        /////////////Settlements *
+//        System.out.println("//////getSettlements().size() " + data.getSettlements().size());
+//        for (Settlement s : data.getSettlements()) {
+//            System.out.println(s);
+//        }
+        String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
+
+        data.associatePlaces();
+        for (Place p : data.getPlaces()) {
+            District d = data.findDistrict(p);
+            Region r = data.findRegion(p);
+            Settlement s = data.findSettlements(p);
+            if (d != null) {
+                System.out.println(d + " District " + p);
+            }
+            if (r != null) {
+                System.out.println(r + " Region " + p);
+            }
+            if (s != null) {
+                System.out.println(s + " Settlement " + p);
+            }
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         //readTest();
         //speedTest();
         //sortPlace();
         //regexPlace();
+
+        //getPlace_Regex();
+        //getPlace_IndexOf();
+        //getPlaceFirstChar();
+        readRegionsDistinctsSettlements();
 
     }
 

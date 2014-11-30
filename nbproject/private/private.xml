@@ -3,10 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/Place.java</file>
             <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/OktmoMain.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/Overall.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/test/lab2/OktmoDataTest.java</file>
             <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/OktmoData.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/Region.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/StringFunktions.java</file>
             <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/OktmoReader.java</file>
-            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Place.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/Settlement.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/OktmoAnalyzer.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/src/lab2/Map/District.java</file>
+            <file>file:/C:/Users/Nail/Documents/NetBeansProjects/Lab2/test/lab2/OktmoReaderTest.java</file>
         </group>
     </open-files>
 </project-private>

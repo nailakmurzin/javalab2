@@ -1,25 +1,14 @@
-package lab2;
+package lab2.Map;
 
 import java.util.Comparator;
 
-public class Place implements Comparable {
+public class Place extends Overall implements Comparable {
 
-    private long code = 0;
-    private String name = "";
     private String status = "";
 
     public Place(long _code, String _name, String _status) {
-        code = _code;
-        name = _name;
+        super(_code, _name);
         status = _status;
-    }
-
-    public long getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getStatus() {
@@ -28,7 +17,7 @@ public class Place implements Comparable {
 
     @Override
     public String toString() {
-        return "|" + code + "|" + name + "|" + status + "|";
+        return "|" + getCode() + "|" + getName() + "|" + getStatus() + "|";
     }
 
     @Override
@@ -38,16 +27,16 @@ public class Place implements Comparable {
             throw new ClassCastException();
         }
 
-        int result = this.name.compareTo(entry.getName());
+        int result = this.getName().compareTo(entry.getName());
         if (result != 0) {
             return result;
         }
-        if (this.code > entry.getCode()) {
+        if (this.getCode() > entry.getCode()) {
             return 1;
-        } else if (this.code < entry.getCode()) {
+        } else if (this.getCode() < entry.getCode()) {
             return -1;
         }
-        result = this.status.compareTo(entry.getStatus());
+        result = this.getStatus().compareTo(entry.getStatus());
         if (result != 0) {
             return result;
         }
@@ -56,14 +45,22 @@ public class Place implements Comparable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) {
-            throw new NullPointerException();
-        }
         Place entry = (Place) o;
         if (entry == null) {
             throw new ClassCastException();
         }
-        return this == entry || (this.code == entry.getCode() && this.name.equals(entry.getName()) && this.status.equals(entry.getStatus()));
+        return this == entry || (this.getCode() == entry.getCode() && this.getName().equals(entry.getName()) && this.getStatus().equals(entry.getStatus()));
+    }
+
+    public static Place getPlace(String[] _arr) {
+
+        Long longDigit = Overall.getCode(_arr);
+        if (longDigit == null || _arr[2].matches("^[А-Я].+")) {
+            return null;
+        }
+        String[] del = StringFunktions.getHeadTail(_arr[2], " ");
+
+        return del.length > 1 ? new Place(longDigit, del[1], del[0]) : null;
     }
 
     public static class SortedByName implements Comparator<Place> {
