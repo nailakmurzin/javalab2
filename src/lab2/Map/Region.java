@@ -8,12 +8,8 @@ public class Region extends ObjectOnMap {
 
     private final Map<Integer, District> districts = new TreeMap<>();
 
-    public static Region getRegion(String... _arr) {
-        Long longDigit = ObjectOnMap.getCode(_arr);
-        if (longDigit == null) {
-            return null;
-        }
-        return (longDigit % 1000000) == 0 ? new Region(longDigit, _arr[2]) : null;
+    public static Region getRegion(long _code, String _str) {
+        return (_code % 1000000) == 0 ? new Region(_code, _str) : null;
     }
 
     public Region(long _code, String _name) {

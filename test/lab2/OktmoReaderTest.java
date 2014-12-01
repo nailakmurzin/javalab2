@@ -69,17 +69,19 @@ public class OktmoReaderTest {
         String[] readPlaces2 = or.readPlaces_Regex("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data2);
 
         Place[] places = data1.getPlaces().toArray(new Place[data1.getPlaces().size()]);
-        for (int i = 0; i < data1.getPlaces().size(); i++) {
-            for (int j = 0; j < data1.getPlaces().size(); j++) {
-                if (i != j) {
-                    assertFalse(places[i].equals(places[j]));
-                } else {
-                    assertTrue(places[i].equals(places[j]));
-                }
-            }
-        }
+        
+//        for (int i = 0; i < data1.getPlaces().size(); i++) {
+//            for (int j = 0; j < data1.getPlaces().size(); j++) {
+//                if (i != j) {
+//                    assertFalse(places[i].equals(places[j]));
+//                } else {
+//                    assertTrue(places[i].equals(places[j]));
+//                }
+//            }
+//        }
 
-        assertTrue(Arrays.equals(readPlaces1, readPlaces2));
+        assertArrayEquals(readPlaces1, readPlaces2);
+        assertEquals(data1.getPlaces(), data2.getPlaces());
 
     }
 }

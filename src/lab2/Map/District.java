@@ -7,12 +7,8 @@ public class District extends ObjectOnMap {
 
     private final Map<Integer, Settlement> settlements = new TreeMap<>();
 
-    public static District getDistrict(String... _arr) {
-        Long longDigit = District.getCode(_arr);
-        if (longDigit == null) {
-            return null;
-        }
-        return (longDigit % 1000) == 0 ? new District(longDigit, _arr[2]) : null;
+    public static District getDistrict(long _code, String _str) {
+        return (_code % 1000) == 0 ? new District(_code, _str) : null;
     }
 
     public District(long _code, String _name) {
@@ -33,10 +29,7 @@ public class District extends ObjectOnMap {
     }
 
     public Settlement getSettlement(int _code) {
-        if (this.settlements.containsKey(_code)) {
-            return this.settlements.get(_code);
-        }
-        return null;
+        return this.settlements.get(_code);
     }
 
     public boolean add(Settlement _s) {

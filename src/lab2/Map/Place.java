@@ -40,15 +40,13 @@ public class Place extends ObjectOnMap implements Comparable {
 
     private String status = "";
 
-    public static Place getPlace(String[] _arr) {
-
-        Long longDigit = ObjectOnMap.getCode(_arr);
-        if (longDigit == null || _arr[2].matches("^[А-Я].+")) {
+    public static Place getPlace(long _code, String _str) {
+        if (_str.matches("^[А-Я].+")) {
             return null;
         }
-        String[] del = StringArrayFunktions.getHeadTail(_arr[2], " ");
+        String[] del = StringArrayFunktions.getHeadTail(_str, " ");
 
-        return del.length > 1 ? new Place(longDigit, del[1], del[0]) : null;
+        return del.length > 1 ? new Place(_code, del[1], del[0]) : null;
     }
 
     public Place(long _code, String _name, String _status) {

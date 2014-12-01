@@ -184,13 +184,21 @@ public class OktmoMain {
         String[] readPlaces = or.readPlaces_IndexOf("C:\\Users\\Nail\\Desktop\\JAVA\\lab2\\tom5_oktmo_2.csv", data);
 
         data.associatePlaces();
-
-        System.out.println(data.getSettlements().size());
         
+        System.out.println(data.getPlaces().size());
+        System.out.println();
+        System.out.println(data.getSettlements().size());
         System.out.println();
         System.out.println(data.getDistricts().size());
         System.out.println();
         System.out.println(data.getRegions().size());
+
+        for (Region r : data.getRegions()) {
+            System.out.println(r);
+        }
+        OktmoAnalyzer a = new OktmoAnalyzer(data);
+        Settlement s = a.findMaxSettlement();
+        System.out.println(s.countPlaces() + " "+ s);
     }
 
     public static void main(String[] args) {

@@ -21,7 +21,7 @@ public class Settlement extends ObjectOnMap {
 
     public boolean add(Place p) {
         int digit = (int) (p.getCode() % (this.getCode() * 1000));
-        if (!isPlaceInSettlement(p) || this.places.containsKey(digit) || this.places.containsValue(p)) {
+        if (!isPlaceInSettlement(p) || this.places.containsKey(digit)) {
             return false;
         }
         this.places.put(digit, p);
@@ -35,12 +35,8 @@ public class Settlement extends ObjectOnMap {
         return null;
     }
 
-    public static Settlement getSettlement(String... arr) {
-        Long longDigit = ObjectOnMap.getCode(arr);
-        if (longDigit == null) {
-            return null;
-        }
-        return new Settlement(longDigit, arr[2]);
+    public static Settlement getSettlement(long _code, String _str) {
+        return new Settlement(_code, _str);
     }
 
     public boolean isPlaceInSettlement(Place p) {

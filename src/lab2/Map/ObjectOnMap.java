@@ -18,24 +18,6 @@ public abstract class ObjectOnMap {
         return name;
     }
 
-    public static Long getCode(String... _arr) {
-        if (_arr.length < 3) {
-            return null;
-        }
-        String number = _arr[0].replace(" ", "");
-
-        if (number.length() == 0 || _arr[2].isEmpty()) {
-            return null;
-        }
-        Long digit = null;
-        try {
-            digit = Long.parseLong(number);
-        } catch (Exception ex) {
-            digit = null;
-        }
-        return digit;
-    }
-
     @Override
     public String toString() {
         return "|" + getCode() + "|" + getName() + "|";
