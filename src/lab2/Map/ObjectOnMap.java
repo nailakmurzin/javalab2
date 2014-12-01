@@ -1,11 +1,11 @@
 package lab2.Map;
 
-public class Overall {
+public abstract class ObjectOnMap {
 
     private long code = 0;
     private String name = "";
 
-    public Overall(long _code, String _name) {
+    public ObjectOnMap(long _code, String _name) {
         code = _code;
         name = _name;
     }

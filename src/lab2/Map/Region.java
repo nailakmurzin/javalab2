@@ -4,20 +4,20 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Region extends Overall {
+public class Region extends ObjectOnMap {
 
     private final Map<Integer, District> districts = new TreeMap<>();
 
-    public Region(long _code, String _name) {
-        super(_code, _name);
-    }
-
     public static Region getRegion(String... _arr) {
-        Long longDigit = Overall.getCode(_arr);
+        Long longDigit = ObjectOnMap.getCode(_arr);
         if (longDigit == null) {
             return null;
         }
         return (longDigit % 1000000) == 0 ? new Region(longDigit, _arr[2]) : null;
+    }
+
+    public Region(long _code, String _name) {
+        super(_code, _name);
     }
 
     public boolean isPlaceInRegion(Place _p) {
@@ -26,6 +26,15 @@ public class Region extends Overall {
 
     public Map<Integer, District> getDistricts() {
         return this.districts;
+    }
+
+    public int countPlaces() {
+        int count = 0;
+        for (Map.Entry<Integer, District> entry : this.getDistricts().entrySet()) {
+            District d = entry.getValue();
+            count += d.countPlaces();
+        }
+        return count;
     }
 
     public boolean add(District _d) {

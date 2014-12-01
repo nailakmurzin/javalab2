@@ -3,7 +3,7 @@ package lab2.Map;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Settlement extends Overall {
+public class Settlement extends ObjectOnMap {
 
     private final Map<Integer, Place> places = new TreeMap<>();
 
@@ -13,6 +13,10 @@ public class Settlement extends Overall {
 
     public Map<Integer, Place> getPlaces() {
         return this.places;
+    }
+
+    public int countPlaces() {
+        return getPlaces().size();
     }
 
     public boolean add(Place p) {
@@ -32,7 +36,7 @@ public class Settlement extends Overall {
     }
 
     public static Settlement getSettlement(String... arr) {
-        Long longDigit = Overall.getCode(arr);
+        Long longDigit = ObjectOnMap.getCode(arr);
         if (longDigit == null) {
             return null;
         }
